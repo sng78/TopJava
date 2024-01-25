@@ -27,8 +27,13 @@ public class UserMealsUtil {
         List<UserMealWithExcess> mealsTo = filteredByCycles(
                 meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
+        System.out.println();
 
         System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+        System.out.println();
+
+        filteredByOneCycle(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000)
+                .forEach(System.out::println);
     }
 
     public static List<UserMealWithExcess> filteredByCycles(
@@ -62,5 +67,42 @@ public class UserMealsUtil {
                         meal.getDateTime(), meal.getDescription(), meal.getCalories(),
                         caloriesPerDayMap.get(meal.getDateTime().toLocalDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
+    }
+
+    public static List<UserMealWithExcess> filteredByOneCycle(
+            List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        List<UserMeal> filteredMeals = new ArrayList<>();
+        LocalDate date = meals.getFirst().getDateTime().toLocalDate();
+        int caloriesPerDayFact = 0;
+        List<UserMealWithExcess> userMealWithExcesses = new ArrayList<>();
+
+        for (int i = 0; i < meals.size(); i++) {
+            UserMeal meal = meals.get(i);
+            if (isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
+                filteredMeals.add(meal);
+            }
+
+            LocalDate currentDate = meal.getDateTime().toLocalDate();
+            if (currentDate.equals(date)) {
+                caloriesPerDayFact += meal.getCalories();
+            }
+            if (!currentDate.equals(date) || i == meals.size() - 1) {
+                addElements(filteredMeals, caloriesPerDayFact, caloriesPerDay, userMealWithExcesses);
+                filteredMeals.clear();
+                date = currentDate;
+                caloriesPerDayFact = meal.getCalories();
+            }
+        }
+        return userMealWithExcesses;
+    }
+
+    private static void addElements(List<UserMeal> filteredMeals, int caloriesPerDayFact, int caloriesPerDay,
+                                    List<UserMealWithExcess> userMealWithExcesses) {
+        filteredMeals.forEach(meal -> {
+            UserMealWithExcess userMealWithExcess = new UserMealWithExcess(
+                    meal.getDateTime(), meal.getDescription(), meal.getCalories(),
+                    caloriesPerDayFact > caloriesPerDay);
+            userMealWithExcesses.add(userMealWithExcess);
+        });
     }
 }
