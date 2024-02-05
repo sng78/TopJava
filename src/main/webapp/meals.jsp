@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="ru">
 <head>
     <link rel="stylesheet" href="css/style.css">
@@ -19,17 +20,11 @@
         <jsp:useBean id="meals" scope="request" type="java.util.List"/>
         <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
-
-            <c:if test="<%=meal.isExcess()%>">
-                <tr style="color: red;">
-            </c:if>
-            <c:if test="<%=!meal.isExcess()%>">
-                <tr style="color: green;">
-            </c:if>
-
-            <td>${meal.dateTime.toString().replace("T", " ")}</td>
-            <td>${meal.description}</td>
-            <td>${meal.calories}</td>
+            <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
+            <tr style="color:${meal.excess ? "red" : "green"}">
+                <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${parsedDateTime}"/></td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
             </tr>
         </c:forEach>
     </table>
