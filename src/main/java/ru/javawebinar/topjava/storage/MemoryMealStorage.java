@@ -7,7 +7,7 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-public class MemoryMealStorage implements MealStorage{
+public class MemoryMealStorage implements MealStorage {
     protected List<Meal> meals = Arrays.asList(
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
