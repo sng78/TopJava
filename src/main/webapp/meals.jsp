@@ -11,11 +11,20 @@
 <hr>
 <h2>Meals</h2>
 <section>
+    <table id="hidden-table">
+        <tr>
+            <td style="border-bottom: hidden; text-align: left">
+                <a href="meals?action=add" style="vertical-align:middle"> New meal</a>
+            </td>
+        </tr>
+    </table>
     <table>
         <tr>
             <th>Date</th>
             <th>Description</th>
             <th>Calories</th>
+            <th></th>
+            <th></th>
         </tr>
         <jsp:useBean id="meals" scope="request" type="java.util.List"/>
         <c:forEach items="${meals}" var="meal">
@@ -27,6 +36,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?id=${meal.id}&action=update">Update</a></td>
+                <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
