@@ -7,11 +7,9 @@ import java.util.List;
 public interface MealStorage {
     Meal save(Meal meal);
 
-    Meal update(Meal meal);
-
-    Meal get(Integer id);
+    Meal get(int id);
 
     List<Meal> getAll();
 
-    void delete(Integer id);
+    void delete(int id);
 }

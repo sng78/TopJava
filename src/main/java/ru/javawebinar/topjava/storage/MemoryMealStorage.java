@@ -2,46 +2,41 @@ package ru.javawebinar.topjava.storage;
 
 import ru.javawebinar.topjava.model.Meal;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static ru.javawebinar.topjava.util.MealsUtil.meals;
 
 public class MemoryMealStorage implements MealStorage {
-    protected List<Meal> meals = Arrays.asList(
-            new Meal(1, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
-            new Meal(2, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
-            new Meal(3, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500),
-            new Meal(4, LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
-            new Meal(5, LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
-            new Meal(6, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
-            new Meal(7, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
-    );
+    protected AtomicInteger counter = new AtomicInteger(0);
+    protected Map<Integer, Meal> storage = new ConcurrentHashMap<>();
 
-    @Override///
+    public MemoryMealStorage() {
+        meals.forEach(this::save);
+    }
+
+    @Override
     public Meal save(Meal meal) {
-        meals.add(meal);
+        if (meal.getId() == null) {
+            meal.setId(counter.incrementAndGet());
+        }
+        storage.put(meal.getId(), meal);
         return meal;
     }
 
     @Override
-    public Meal update(Meal meal) {
-        save(meal);
-        return meal;
+    public Meal get(int id) {
+        return storage.get(id);
     }
 
-    @Override///
-    public Meal get(Integer id) {
-        return meals.stream().filter(meal -> meal.getId().equals(id)).findFirst().orElse(null);
-    }
-
-    @Override///
+    @Override
     public List<Meal> getAll() {
-        return meals;
+        return new ArrayList<>(storage.values());
     }
 
-    @Override///
-    public void delete(Integer id) {
-        meals.removeIf(meal -> meal.getId().equals(id));
+    @Override
+    public void delete(int id) {
+        storage.remove(id);
     }
 }
