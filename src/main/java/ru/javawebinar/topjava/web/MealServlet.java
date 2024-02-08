@@ -24,7 +24,6 @@ public class MealServlet extends HttpServlet {
 
     public void init() {
         log.debug("init");
-
         storage = new MemoryMealStorage();
     }
 
@@ -43,7 +42,7 @@ public class MealServlet extends HttpServlet {
             case "update":
             case "add":
                 id = request.getParameter("id");
-                Meal meal = "add".equals(action) ? new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),"", 0) :
+                Meal meal = "add".equals(action) ? new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0) :
                         storage.get(Integer.parseInt(id));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/meal.jsp").forward(request, response);
@@ -63,7 +62,7 @@ public class MealServlet extends HttpServlet {
         LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("dateTime"));
         String description = request.getParameter("description");
         int calories = Integer.parseInt(request.getParameter("calories"));
-        String id = (request.getParameter("id"));
+        String id = request.getParameter("id");
         Meal meal = new Meal(id == null || id.isEmpty() ? null : Integer.parseInt(id), dateTime, description, calories);
         log.debug("doPost meal");
         storage.save(meal);

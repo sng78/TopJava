@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static ru.javawebinar.topjava.util.MealsUtil.meals;
 
 public class MemoryMealStorage implements MealStorage {
-    protected AtomicInteger counter = new AtomicInteger(0);
-    protected Map<Integer, Meal> storage = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(0);
+    private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
 
     public MemoryMealStorage() {
         meals.forEach(this::save);
@@ -20,9 +20,10 @@ public class MemoryMealStorage implements MealStorage {
     public Meal save(Meal meal) {
         if (meal.getId() == null) {
             meal.setId(counter.incrementAndGet());
+            storage.put(meal.getId(), meal);
+            return meal;
         }
-        storage.put(meal.getId(), meal);
-        return meal;
+        return storage.computeIfPresent(meal.getId(), (id, existMeal) -> meal);
     }
 
     @Override
