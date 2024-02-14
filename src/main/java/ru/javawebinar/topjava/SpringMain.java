@@ -24,6 +24,8 @@ public class SpringMain {
             Meal newMeal = new Meal(LocalDateTime.of(2023, Month.MAY, 14, 11, 0), "Перекус", 500);
             mealController.create(newMeal);
             mealController.getAll().forEach(System.out::println);
+
+            mealController.getFiltered(null, null, null, null).forEach(System.out::println);
         }
     }
 }
