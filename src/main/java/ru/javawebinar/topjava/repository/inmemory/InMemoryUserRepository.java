@@ -31,9 +31,9 @@ public class InMemoryUserRepository implements UserRepository {
         if (user.getId() == null) {
             user.setId(counter.incrementAndGet());
             repository.put(user.getId(), user);
-            return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
+            return user;
         }
-        return user;
+        return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class MealService {
     }
 
     public Meal get(int mealId, int userId) {
-        return checkNotFoundWithId(mealRepository.get(mealId, userId), userId);
+        return checkNotFoundWithId(mealRepository.get(mealId, userId), mealId);
     }
 
     public Meal create(Meal meal, int userId) {
@@ -30,7 +30,7 @@ public class MealService {
     }
 
     public void delete(int mealId, int userId) {
-        checkNotFoundWithId(mealRepository.delete(mealId, userId), userId);
+        checkNotFoundWithId(mealRepository.delete(mealId, userId), mealId);
     }
 
     public void update(Meal meal, int userId) {
@@ -41,10 +41,10 @@ public class MealService {
         return MealsUtil.getTos(mealRepository.getAll(userId), calories);
     }
 
-    public List<MealTo> getAllByDate(
+    public List<MealTo> getFiltered(
             int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int calories) {
-        List<Meal> allByDate = mealRepository.getAllByDate(
+        List<Meal> filteredMeals = mealRepository.getFiltered(
                 userId, LocalDateTime.of(startDate, startTime), LocalDateTime.of(endDate, endTime));
-        return MealsUtil.getFilteredTos(allByDate, calories, startTime, endTime);
+        return MealsUtil.getFilteredTos(filteredMeals, calories, startTime, endTime);
     }
 }
