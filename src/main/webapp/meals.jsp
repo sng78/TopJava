@@ -14,6 +14,21 @@
         .excess {
             color: red;
         }
+
+        dl {
+            margin: 8px 0;
+            padding: 0;
+        }
+
+        dt {
+            display: inline-block;
+        }
+
+        dd {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: top;
+        }
     </style>
 </head>
 <body>
@@ -23,6 +38,20 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+    <form method="post" action="meals" name="filtered">
+        <input type="hidden" name="filter" value="filtered">
+        <dl>
+            <dt>Дата начала</dt>
+            <dd><input type="date" value="${sessionScope.startDate}" name="startDate"></dd>
+            <dt>Время начала</dt>
+            <dd><input type="time" value="${sessionScope.startTime}" name="startTime"></dd>
+            <dt>Дата окончания</dt>
+            <dd><input type="date" value="${sessionScope.endDate}" name="endDate"></dd>
+            <dt>Время окончания</dt>
+            <dd><input type="time" value="${sessionScope.endTime}" name="endTime"></dd>
+        </dl>
+        <button type="submit">Отфильтровать</button>
+    </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
