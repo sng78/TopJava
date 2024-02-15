@@ -38,17 +38,17 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
-    <form method="post" action="meals" name="filtered">
-        <input type="hidden" name="filter" value="filtered">
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
         <dl>
             <dt>Дата начала</dt>
-            <dd><input type="date" value="${sessionScope.startDate}" name="startDate"></dd>
+            <dd><input type="date" value="${param.startDate}" name="startDate"></dd>
             <dt>Время начала</dt>
-            <dd><input type="time" value="${sessionScope.startTime}" name="startTime"></dd>
+            <dd><input type="time" value="${param.startTime}" name="startTime"></dd>
             <dt>Дата окончания</dt>
-            <dd><input type="date" value="${sessionScope.endDate}" name="endDate"></dd>
+            <dd><input type="date" value="${param.endDate}" name="endDate"></dd>
             <dt>Время окончания</dt>
-            <dd><input type="time" value="${sessionScope.endTime}" name="endTime"></dd>
+            <dd><input type="time" value="${param.endTime}" name="endTime"></dd>
         </dl>
         <button type="submit">Отфильтровать</button>
     </form>
