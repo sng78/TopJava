@@ -20,21 +20,21 @@ public class MealTestData {
     public static final int MEAL8_ID = START_SEQ + 10;
     public static final int NOT_FOUND = 10;
 
-    public static final Meal MEAL_1 = new Meal(MEAL1_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 10, 0), "Завтрак", 1000);
-    public static final Meal MEAL_2 = new Meal(MEAL2_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 14, 0), "Обед", 500);
-    public static final Meal MEAL_3 = new Meal(MEAL3_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 19, 0), "Ужин", 450);
-    public static final Meal MEAL_4 = new Meal(MEAL4_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 10, 0), "Завтрак", 1000);
-    public static final Meal MEAL_5 = new Meal(MEAL5_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 14, 0), "Обед", 600);
-    public static final Meal MEAL_6 = new Meal(MEAL6_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 19, 0), "Ужин", 401);
-    public static final Meal MEAL_7 = new Meal(MEAL7_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 8, 0), "Завтрак", 1000);
-    public static final Meal MEAL_8 = new Meal(MEAL8_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 20, 0), "Ужин", 1000);
+    public static final Meal mealUser1 = new Meal(MEAL1_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 10, 0), "Завтрак", 1000);
+    public static final Meal mealUser2 = new Meal(MEAL2_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 14, 0), "Обед", 500);
+    public static final Meal mealUser3 = new Meal(MEAL3_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 19, 0), "Ужин", 450);
+    public static final Meal mealUser4 = new Meal(MEAL4_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 10, 0), "Завтрак", 1000);
+    public static final Meal mealUser5 = new Meal(MEAL5_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 14, 0), "Обед", 600);
+    public static final Meal mealUser6 = new Meal(MEAL6_ID, LocalDateTime.of(2023, Month.SEPTEMBER, 5, 19, 0), "Ужин", 401);
+    public static final Meal mealAdmin1 = new Meal(MEAL7_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 8, 0), "Завтрак", 1000);
+    public static final Meal mealAdmin2 = new Meal(MEAL8_ID, LocalDateTime.of(2023, Month.AUGUST, 5, 20, 0), "Ужин", 1000);
 
     public static Meal getNew() {
         return new Meal(null, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500);
     }
 
     public static Meal getUpdated() {
-        Meal updated = new Meal(MEAL_1);
+        Meal updated = new Meal(mealUser1);
         updated.setDateTime(LocalDateTime.of(2023, Month.AUGUST, 5, 11, 0));
         updated.setDescription("Новая еда");
         updated.setCalories(1200);
