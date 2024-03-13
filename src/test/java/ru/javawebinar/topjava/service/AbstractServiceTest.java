@@ -18,6 +18,7 @@ import ru.javawebinar.topjava.TimingRules;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertThrows;
+import static ru.javawebinar.topjava.Profiles.JDBC;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 
 @ContextConfiguration({
@@ -50,6 +51,6 @@ public abstract class AbstractServiceTest {
     }
 
     protected boolean isJdbcProfileActive() {
-        return Arrays.asList(environment.getActiveProfiles()).contains("jdbc");
+        return Arrays.asList(environment.getActiveProfiles()).contains(JDBC);
     }
 }
