@@ -1,9 +1,9 @@
 package ru.javawebinar.topjava.web.meal;
 
-import org.slf4j.LoggerFactory;
+import ru.javawebinar.topjava.service.MealService;
 
 public class MealRestController extends AbstractMealController{
-    public MealRestController() {
-        super(LoggerFactory.getLogger(MealRestController.class));
+    public MealRestController(MealService service) {
+        super(service);
     }
 }
