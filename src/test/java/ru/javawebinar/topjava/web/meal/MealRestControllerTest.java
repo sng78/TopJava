@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.web.meal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -20,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
-import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
+import static ru.javawebinar.topjava.UserTestData.user;
+import static ru.javawebinar.topjava.util.MealsUtil.createTo;
 
 class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + '/';
@@ -48,7 +50,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        List<MealTo> mealTos = MealsUtil.getTos(meals, DEFAULT_CALORIES_PER_DAY);
+        List<MealTo> mealTos = MealsUtil.getTos(meals, user.getCaloriesPerDay());
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -68,12 +70,23 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        List<MealTo> mealTos = MealsUtil.getTos(List.of(meal3, meal2, meal1), DEFAULT_CALORIES_PER_DAY);
         perform(MockMvcRequestBuilders.get(REST_URL + "/filter")
-                .param("startDateTime", "2020-01-30T10:00:00")
-                .param("endDateTime", "2020-01-30T20:01:00"))
+                .param("startDateTime", "2020-01-30T20:00:00")
+                .param("endDateTime", "2020-01-31T20:10:00"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(mealTos));
+                .andExpect(MEAL_TO_MATCHER.contentJson(createTo(meal7, true), createTo(meal3, false)));
+    }
+
+    @Test
+    void createWithLocation() throws Exception {
+        Meal newMeal = getNew();
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newMeal))).andExpect(status().isCreated());
+        Meal created = MEAL_MATCHER.readFromJson(action);
+        int newId = created.id();
+        newMeal.setId(newId);
+        MEAL_MATCHER.assertMatch(created, newMeal);
+        MEAL_MATCHER.assertMatch(mealService.get(newId, USER_ID), newMeal);
     }
 }
