@@ -1,7 +1,11 @@
 package ru.javawebinar.topjava.util;
 
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.BindingResult;
+
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -15,5 +19,12 @@ public class Util {
     public static Class<?> getEffectiveClass(Object o) {
         return o instanceof HibernateProxy ?
                 ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+    }
+
+    public static ResponseEntity<String> resultErrors(BindingResult result) {
+        String errorFieldsMsg = result.getFieldErrors().stream()
+                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                .collect(Collectors.joining("<br>"));
+        return ResponseEntity.unprocessableEntity().body(errorFieldsMsg);
     }
 }
